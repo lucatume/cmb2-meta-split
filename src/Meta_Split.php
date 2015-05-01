@@ -4,7 +4,7 @@
 class CMB2_Meta_Split {
 
 	/**
-	 * @var static
+	 * @var CMB2_Meta_Split
 	 */
 	protected static $instance;
 
