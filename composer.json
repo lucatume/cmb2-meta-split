@@ -1,0 +1,14 @@
+{
+    "name": "lucatume/cmb2-meta-split",
+    "description": "A WordPress plugin that will take care of saving parallel meta when using the CMB2 plugin.",
+    "type": "wordpress-plugin",
+    "license": "GPL 2.0",
+    "authors": [
+        {
+            "name": "Luca Tumedei",
+            "email": "luca@theaveragedev.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
