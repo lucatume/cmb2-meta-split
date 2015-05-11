@@ -27,6 +27,7 @@ function yourprefix_show_if_front_page( $cmb ) {
 	if ( $cmb->object_id !== get_option( 'page_on_front' ) ) {
 		return false;
 	}
+
 	return true;
 }
 
@@ -42,14 +43,15 @@ function yourprefix_hide_if_no_cats( $field ) {
 	if ( ! has_tag( 'cats', $field->object_id ) ) {
 		return false;
 	}
+
 	return true;
 }
 
 /**
  * Conditionally displays a message if the $post_id is 2
  *
- * @param  array             $field_args Array of field parameters
- * @param  CMB2_Field object $field      Field object
+ * @param  array $field_args Array of field parameters
+ * @param        CMB2_Field  object $field      Field object
  */
 function yourprefix_before_row_if_2( $field_args, $field ) {
 	if ( 2 == $field->object_id ) {
@@ -72,13 +74,13 @@ function yourprefix_register_demo_metabox() {
 	 * Sample metabox to demonstrate each field type included
 	 */
 	$cmb_demo = new_cmb2_box( array(
-		'id'            => $prefix . 'metabox',
-		'title'         => __( 'Test Metabox', 'cmb2' ),
-		'object_types'  => array( 'page', ), // Post type
-		'show_on_cb'    => 'yourprefix_show_if_front_page', // function should return a bool value
-		'context'       => 'normal',
-		'priority'      => 'high',
-		'show_names'    => true, // Show field names on the left
+		'id'           => $prefix . 'metabox',
+		'title'        => __( 'Test Metabox', 'cmb2' ),
+		'object_types' => array( 'page', ), // Post type
+		'show_on_cb'   => 'yourprefix_show_if_front_page', // function should return a bool value
+		'context'      => 'normal',
+		'priority'     => 'high',
+		'show_names'   => true, // Show field names on the left
 		// 'cmb_styles' => false, // false to disable the CMB stylesheet
 		// 'closed'     => true, // true to keep the metabox closed by default
 	) );
@@ -87,7 +89,7 @@ function yourprefix_register_demo_metabox() {
 		'name'       => __( 'Repeatable text', 'cmb2' ),
 		'id'         => $prefix . 'rep_text',
 		'type'       => 'text_small',
-		 'repeatable'      => true
+		'repeatable' => true
 	) );
 
 	$cmb_demo->add_field( array(
@@ -404,6 +406,15 @@ function yourprefix_register_repeatable_group_field_metabox() {
 		'object_types' => array( 'page', ),
 	) );
 
+	$cmb_group->add_field( array(
+		'name'       => __( 'Repeatable text', 'cmb2' ),
+		'desc'       => __( 'field description (optional)', 'cmb2' ),
+		'id'         => $prefix . 'repeat_text',
+		'type'       => 'text_small',
+		'repeatable' => true,
+		'on_front'   => false,
+	) );
+
 	// $group_field_id is the field id string, so in this case: $prefix . 'demo'
 	$group_field_id = $cmb_group->add_field( array(
 		'id'          => $prefix . 'demo',
@@ -424,9 +435,9 @@ function yourprefix_register_repeatable_group_field_metabox() {
 	 * The parent field's id needs to be passed as the first argument.
 	 */
 	$cmb_group->add_group_field( $group_field_id, array(
-		'name'       => __( 'Entry Title', 'cmb2' ),
-		'id'         => 'title',
-		'type'       => 'text',
+		'name' => __( 'Entry Title', 'cmb2' ),
+		'id'   => 'title',
+		'type' => 'text',
 		// 'repeatable' => true, // Repeatable fields are supported w/in repeatable groups (for most types)
 	) );
 
@@ -466,9 +477,11 @@ function yourprefix_register_user_profile_metabox() {
 	$cmb_user = new_cmb2_box( array(
 		'id'               => $prefix . 'edit',
 		'title'            => __( 'User Profile Metabox', 'cmb2' ),
-		'object_types'     => array( 'user' ), // Tells CMB2 to use user_meta vs post_meta
+		'object_types'     => array( 'user' ),
+		// Tells CMB2 to use user_meta vs post_meta
 		'show_names'       => true,
-		'new_user_section' => 'add-new-user', // where form will show on new user page. 'add-existing-user' is only other valid option.
+		'new_user_section' => 'add-new-user',
+		// where form will show on new user page. 'add-existing-user' is only other valid option.
 	) );
 
 	$cmb_user->add_field( array(
@@ -480,44 +493,54 @@ function yourprefix_register_user_profile_metabox() {
 	) );
 
 	$cmb_user->add_field( array(
-		'name'    => __( 'Avatar', 'cmb2' ),
-		'desc'    => __( 'field description (optional)', 'cmb2' ),
-		'id'      => $prefix . 'avatar',
-		'type'    => 'file',
+		'name'       => __( 'Facebook URL', 'cmb2' ),
+		'desc'       => __( 'field description (optional)', 'cmb2' ),
+		'id'         => $prefix . 'facebookurl',
+		'type'       => 'text_url',
+		'repeatable' => true
+	) );
+	// $group_field_id is the field id string, so in this case: $prefix . 'demo'
+	$group_field_id = $cmb_user->add_field( array(
+		'id'          => $prefix . 'demo',
+		'type'        => 'group',
+		'description' => __( 'Generates reusable form entries', 'cmb2' ),
+		'options'     => array(
+			'group_title'   => __( 'Entry {#}', 'cmb2' ), // {#} gets replaced by row number
+			'add_button'    => __( 'Add Another Entry', 'cmb2' ),
+			'remove_button' => __( 'Remove Entry', 'cmb2' ),
+			'sortable'      => true, // beta
+		),
 	) );
 
-	$cmb_user->add_field( array(
-		'name' => __( 'Facebook URL', 'cmb2' ),
-		'desc' => __( 'field description (optional)', 'cmb2' ),
-		'id'   => $prefix . 'facebookurl',
-		'type' => 'text_url',
+	/**
+	 * Group fields works the same, except ids only need
+	 * to be unique to the group. Prefix is not needed.
+	 *
+	 * The parent field's id needs to be passed as the first argument.
+	 */
+	$cmb_user->add_group_field( $group_field_id, array(
+		'name' => __( 'Entry Title', 'cmb2' ),
+		'id'   => 'title',
+		'type' => 'text',
+		// 'repeatable' => true, // Repeatable fields are supported w/in repeatable groups (for most types)
 	) );
 
-	$cmb_user->add_field( array(
-		'name' => __( 'Twitter URL', 'cmb2' ),
-		'desc' => __( 'field description (optional)', 'cmb2' ),
-		'id'   => $prefix . 'twitterurl',
-		'type' => 'text_url',
+	$cmb_user->add_group_field( $group_field_id, array(
+		'name'        => __( 'Description', 'cmb2' ),
+		'description' => __( 'Write a short description for this entry', 'cmb2' ),
+		'id'          => 'description',
+		'type'        => 'textarea_small',
 	) );
 
-	$cmb_user->add_field( array(
-		'name' => __( 'Google+ URL', 'cmb2' ),
-		'desc' => __( 'field description (optional)', 'cmb2' ),
-		'id'   => $prefix . 'googleplusurl',
-		'type' => 'text_url',
+	$cmb_user->add_group_field( $group_field_id, array(
+		'name' => __( 'Entry Image', 'cmb2' ),
+		'id'   => 'image',
+		'type' => 'file',
 	) );
 
-	$cmb_user->add_field( array(
-		'name' => __( 'Linkedin URL', 'cmb2' ),
-		'desc' => __( 'field description (optional)', 'cmb2' ),
-		'id'   => $prefix . 'linkedinurl',
-		'type' => 'text_url',
-	) );
-
-	$cmb_user->add_field( array(
-		'name' => __( 'User Field', 'cmb2' ),
-		'desc' => __( 'field description (optional)', 'cmb2' ),
-		'id'   => $prefix . 'user_text_field',
+	$cmb_user->add_group_field( $group_field_id, array(
+		'name' => __( 'Image Caption', 'cmb2' ),
+		'id'   => 'image_caption',
 		'type' => 'text',
 	) );
 

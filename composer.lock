@@ -1,0 +1,92 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "3c497f7209717647eaba909ad5c80142",
+    "packages": [
+        {
+            "name": "lucatume/args",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lucatume/args.git",
+                "reference": "0be8ba515ad238eb0bec6ddd1602da51c6c7171b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lucatume/args/zipball/0be8ba515ad238eb0bec6ddd1602da51c6c7171b",
+                "reference": "0be8ba515ad238eb0bec6ddd1602da51c6c7171b",
+                "shasum": ""
+            },
+            "require": {
+                "xrstf/composer-php52": "1.*"
+            },
+            "require-dev": {
+                "codeception/codeception": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Arg": "src/",
+                    "tad_": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL2"
+            ],
+            "authors": [
+                {
+                    "name": "Luca Tumedei",
+                    "email": "luca@theaveragedev.com"
+                }
+            ],
+            "description": "A PHP 5.2 compatible arguments handling library.",
+            "time": "2015-04-20 19:02:17"
+        },
+        {
+            "name": "xrstf/composer-php52",
+            "version": "dev-default",
+            "source": {
+                "type": "hg",
+                "url": "https://bitbucket.org/xrstf/composer-php52",
+                "reference": "717c00a8bec1b40401384536d2ebaea57c7c35d4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/xrstf/composer-php52/get/717c00a8bec1b40401384536d2ebaea57c7c35d4.zip",
+                "reference": "717c00a8bec1b40401384536d2ebaea57c7c35d4",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-default": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "xrstf\\Composer52": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "homepage": "http://www.xrstf.de/",
+            "time": "2015-02-01 14:29:12"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "lucatume/args": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
