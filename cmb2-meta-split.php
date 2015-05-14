@@ -14,4 +14,4 @@ include dirname( __FILE__ ) . '/autoload.php';
 add_filter( 'cmb2_override_meta_save', array( CMB2_Meta_Split::instance(), 'meta_save' ), 100, 4 );
 add_filter( 'cmb2_override_meta_remove', array( CMB2_Meta_Split::instance(), 'meta_remove' ), 100, 4 );
 
-include 'functions.php';
+//include 'sample-functions.php';
