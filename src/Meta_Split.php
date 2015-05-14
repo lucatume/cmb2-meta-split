@@ -29,8 +29,13 @@ class CMB2_Meta_Split {
 			$args = (object) $args;
 
 			// from the post type get the right handler class
-			$object_type   = $args->type;
+			$object_type = $args->type;
+
 			$meta_splitter = $this->get_meta_splitter( $object_type );
+
+			if ( ! $meta_splitter ) {
+				return;
+			}
 
 			$meta_splitter->set_field_id( $args->field_id );
 			if ( is_array( $args->value ) ) {
@@ -48,7 +53,11 @@ class CMB2_Meta_Split {
 	 * @return CMB2_Abstract_Meta_Splitter
 	 */
 	protected function get_meta_splitter( $object_type ) {
-		$meta_splitter = CMB2_Meta_Splitter_Factory::make( $object_type );
+		try {
+			$meta_splitter = CMB2_Meta_Splitter_Factory::make( $object_type );
+		} catch ( Exception $e ) {
+			return false;
+		}
 
 		return $meta_splitter;
 	}
@@ -66,7 +75,11 @@ class CMB2_Meta_Split {
 			$args = (object) $args;
 
 			$object_type   = $args->type;
-			$meta_splitter = CMB2_Meta_Splitter_Factory::make( $object_type );
+			$meta_splitter = $this->get_meta_splitter( $object_type );
+
+			if ( ! $meta_splitter ) {
+				return;
+			}
 
 			$meta_splitter->delete_meta( $args );
 		} catch ( Exception $e ) {
