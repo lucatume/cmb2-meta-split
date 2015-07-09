@@ -10,7 +10,16 @@
         }
     ],
     "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/lucatume/wp-browser.git"
+        }
+    ],
     "require": {
         "lucatume/args": "dev-master"
+    },
+    "require-dev": {
+        "lucatume/wp-browser": "dev-master"
     }
 }
