@@ -60,6 +60,6 @@ The code below will add a repeatable text field to the page, id `my_text`, and a
 			'type'        => 'textarea_small',
 		) );
 	}
-	
-## To test or develop
-Support for repeatable fields in group fields.
+
+## Split meta postfix
+The `_split` postfix might not be ideal for any application so the plugin comes with the `cmb2_meta_split_postfix` filter to allow for the customization of that.
