@@ -9,9 +9,9 @@
  * License: GPL 2.0
  */
 
-include dirname( __FILE__ ) . '/autoload.php';
+include 'src/Meta_Split.php';
 
-add_filter( 'cmb2_override_meta_save', array( CMB2_Meta_Split::instance(), 'meta_save' ), 100, 4 );
-add_filter( 'cmb2_override_meta_remove', array( CMB2_Meta_Split::instance(), 'meta_remove' ), 100, 4 );
+add_filter( 'cmb2_override_meta_save', array( CMB2_Meta_Split::instance(), 'meta_save' ), 100, 3 );
+add_filter( 'cmb2_override_meta_remove', array( CMB2_Meta_Split::instance(), 'meta_remove' ), 100, 3 );
 
 //include 'sample-functions.php';

@@ -60,7 +60,7 @@ class SavingTest extends \WP_UnitTestCase {
 				'id'         => 'test_meta_2',
 				'type'       => 'text',
 				'repeatable' => true
-			]
+			],
 		];
 		$field = new CMB2_Field( $args );
 
@@ -108,4 +108,36 @@ class SavingTest extends \WP_UnitTestCase {
 		$this->assertEmpty( get_post_meta( $id, 'test_meta_3_split' ) );
 	}
 
+	/**
+	 * @test
+	 * it should save group fields into split meta keys
+	 */
+	public function it_should_save_group_fields_into_split_meta_keys() {
+		$id = $this->factory->post->create();
+
+		$args  = [
+			'object_id'   => $id,
+			'object_type' => 'post',
+			'field_args'  => [
+				'name' => __( 'A post field', 'cmb2' ),
+				'id'   => 'test_meta_4',
+				'type' => 'group'
+			]
+		];
+		$field = new CMB2_Field( $args );
+
+		$meta_value = [
+			[ 'name' => 'John', 'last_name' => 'Doe' ],
+			[ 'name' => 'Jane', 'last_name' => 'Dean' ]
+		];
+
+		$field->save_field( $meta_value );
+
+		/** @var \wpdb $wpdb */
+		global $wpdb;
+
+		$this->assertEquals( $meta_value, get_post_meta( $id, 'test_meta_4', true ) );
+		$this->assertEquals( [ 'John', 'Jane' ], get_post_meta( $id, 'test_meta_4_name_split' ) );
+		$this->assertEquals( [ 'Doe', 'Dean' ], get_post_meta( $id, 'test_meta_4_last_name_split' ) );
+	}
 }

@@ -22,55 +22,72 @@ class CMB2_Meta_Split {
 	 * @param            $override
 	 * @param            $args
 	 * @param            $field_args
-	 * @param CMB2_Field $field
 	 */
-	public function meta_save( $override, $args, $field_args, CMB2_Field $field ) {
-		if ( ! is_array( $args['value'] ) || ! $args['repeat'] || $field_args['type'] == 'group' ) {
+	public function meta_save( $override, array $args, array  $field_args ) {
+		if ( ! $this->applies( $args, $field_args ) ) {
 			return $override;
 		}
 
-		delete_metadata( $args['type'], $args['id'], $args['field_id'] );
-
-		foreach ( $args['value'] as $val ) {
-			add_metadata( $args['type'], $args['id'], $args['field_id'] . '_split', $val );
+		if ( ! is_array( $args['value'] ) ) {
+			return $override;
 		}
+
+		$this->delete_all_meta( $args );
+		$this->update_sub_meta( $args, $args['id'], $args['value'] );
 
 		return $override;
 	}
 
-	/**
-	 * @param $object_type
-	 *
-	 * @return CMB2_Abstract_Meta_Splitter
-	 */
-	protected function get_meta_splitter( $object_type ) {
-		try {
-			$meta_splitter = CMB2_Meta_Splitter_Factory::make( $object_type );
-		} catch ( Exception $e ) {
+	protected function applies( array $args, array  $field_args ) {
+		$group_or_repeatable = $args['repeat'] || ( $field_args['type'] == 'group' );
+		if ( ! $group_or_repeatable ) {
 			return false;
 		}
 
-		return $meta_splitter;
-	}
-
-	/**
-	 * Removes the additional meta values created for the object.
-	 *
-	 * @param            $override
-	 * @param            $args
-	 * @param            $field_args
-	 * @param CMB2_Field $field
-	 */
-	public function meta_remove( $override, $args, $field_args, CMB2_Field $field ) {
-		$args = (object) $args;
-
-		$object_type   = $args->type;
-		$meta_splitter = $this->get_meta_splitter( $object_type );
-
-		if ( ! $meta_splitter ) {
-			return;
+		if ( ! in_array( $args['type'], array( 'post', 'user' ) ) ) {
+			return false;
 		}
 
-		$meta_splitter->delete_meta( $args );
+		return true;
+	}
+
+	private function add_object_meta( $type, $id, $meta_key, $meta_value ) {
+		add_metadata( $type, $id, $meta_key . '_split', $meta_value );
+	}
+
+	protected function update_sub_meta( $args, $id = null, array $v = null, $sub_key = '' ) {
+		$id      = empty( $id ) ? $args['id'] : $id;
+		$v       = empty( $v ) ? $args['value'] : $v;
+		$sub_key = is_numeric( $sub_key ) ? '' : $sub_key;
+
+		foreach ( $v as $key => $entry ) {
+			if ( is_array( $entry ) ) {
+				$this->update_sub_meta( $args, $id, $entry, $key );
+			} else {
+				$postfix      = is_numeric( $key ) ? '' : $sub_key . '_' . $key;
+				$sub_meta_key = $args['field_id'] . $postfix;
+				$this->add_object_meta( $args['type'], $id, $sub_meta_key, $entry );
+			}
+		}
+	}
+
+	protected function delete_all_meta( $args ) {
+		/** @var \wpdb $wpdb */
+		global $wpdb;
+
+		$table  = $wpdb->{$args['type'] . 'meta'};
+		$id_key = $args['type'] . '_id';
+		$q      = $wpdb->prepare( "DELETE t.* FROM $table t WHERE t.$id_key = %d AND t.meta_key REGEXP %s ", $args['id'], '^' . $args['field_id'] );
+
+		$wpdb->query( $q );
+	}
+
+	public function meta_remove( $override, array $args, array $field_args ) {
+		if ( ! $this->applies( $args, $field_args ) ) {
+			return $override;
+		}
+		$this->delete_all_meta( $args );
+
+		return null;
 	}
 }
