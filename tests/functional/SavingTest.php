@@ -137,7 +137,7 @@ class SavingTest extends \WP_UnitTestCase {
 		global $wpdb;
 
 		$this->assertEquals( $meta_value, get_post_meta( $id, 'test_meta_4', true ) );
-		$this->assertEquals( [ 'John', 'Jane' ], get_post_meta( $id, 'test_meta_4_name_split' ) );
-		$this->assertEquals( [ 'Doe', 'Dean' ], get_post_meta( $id, 'test_meta_4_last_name_split' ) );
+		$this->assertEquals( [ 'John', 'Jane' ], get_post_meta( $id, 'test_meta_4_name' ) );
+		$this->assertEquals( [ 'Doe', 'Dean' ], get_post_meta( $id, 'test_meta_4_last_name' ) );
 	}
 }

@@ -32,6 +32,8 @@ class CMB2_Meta_Split {
 			return $override;
 		}
 
+		$args['group'] = $field_args['type'] == 'group' ? true : false;
+
 		$this->delete_all_meta( $args );
 		$this->update_sub_meta( $args, $args['id'], $args['value'] );
 
@@ -51,8 +53,9 @@ class CMB2_Meta_Split {
 		return true;
 	}
 
-	private function add_object_meta( $type, $id, $meta_key, $meta_value ) {
-		add_metadata( $type, $id, $meta_key . '_split', $meta_value );
+	private function add_object_meta( $type, $id, $meta_key, $meta_value, $group = false ) {
+		$prefix = $group ? '' : '_split';
+		add_metadata( $type, $id, $meta_key . $prefix, $meta_value );
 	}
 
 	protected function update_sub_meta( $args, $id = null, array $v = null, $sub_key = '' ) {
@@ -66,7 +69,7 @@ class CMB2_Meta_Split {
 			} else {
 				$postfix      = is_numeric( $key ) ? '' : $sub_key . '_' . $key;
 				$sub_meta_key = $args['field_id'] . $postfix;
-				$this->add_object_meta( $args['type'], $id, $sub_meta_key, $entry );
+				$this->add_object_meta( $args['type'], $id, $sub_meta_key, $entry, $args['group'] );
 			}
 		}
 	}

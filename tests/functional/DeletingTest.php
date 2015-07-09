@@ -95,14 +95,14 @@ class DeletingTest extends \WP_UnitTestCase {
 
 		$field = new CMB2_Field( $args );
 
-		add_post_meta( $id, 'test_meta_3_name_split', 'John' );
-		add_post_meta( $id, 'test_meta_3_address_split', 'Doe' );
-		add_post_meta( $id, 'test_meta_3_name_split', 'Jane' );
-		add_post_meta( $id, 'test_meta_3_address_split', 'Dean' );
+		add_post_meta( $id, 'test_meta_3_name', 'John' );
+		add_post_meta( $id, 'test_meta_3_address', 'Doe' );
+		add_post_meta( $id, 'test_meta_3_name', 'Jane' );
+		add_post_meta( $id, 'test_meta_3_address', 'Dean' );
 
 		$field->remove_data();
 
-		$this->assertEquals( [ ], get_post_meta( $id, 'test_meta_3_name_split' ) );
-		$this->assertEquals( [ ], get_post_meta( $id, 'test_meta_3_address_split' ) );
+		$this->assertEquals( [ ], get_post_meta( $id, 'test_meta_3_name' ) );
+		$this->assertEquals( [ ], get_post_meta( $id, 'test_meta_3_address' ) );
 	}
 }
