@@ -52,16 +52,24 @@ class CMB2_Meta_Split {
 	 * @return bool
 	 */
 	protected function applies( array $args, array  $field_args ) {
+		if ( ! in_array( $args['type'], array( 'post', 'user' ) ) ) {
+			// simply not supported, little to do
+			return false;
+		}
+
+		$applies = true;
+
 		$group_or_repeatable = $args['repeat'] || ( $field_args['type'] == 'group' );
 		if ( ! $group_or_repeatable ) {
-			return false;
+			$applies = false;
 		}
 
-		if ( ! in_array( $args['type'], array( 'post', 'user' ) ) ) {
-			return false;
+		if ( ! empty( $field_args['nosplit'] ) ) {
+			$applies = false;
 		}
 
-		return true;
+
+		return apply_filters( 'cmb2_meta_split_applies', $applies, $args, $field_args );
 	}
 
 	/**

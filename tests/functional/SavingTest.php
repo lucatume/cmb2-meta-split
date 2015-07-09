@@ -140,4 +140,31 @@ class SavingTest extends \WP_UnitTestCase {
 		$this->assertEquals( [ 'John', 'Jane' ], get_post_meta( $id, 'test_meta_4_name' ) );
 		$this->assertEquals( [ 'Doe', 'Dean' ], get_post_meta( $id, 'test_meta_4_last_name' ) );
 	}
+
+	/**
+	 * @test
+	 * it should not split meta if nosplit set
+	 */
+	public function it_should_not_split_meta_if_nosplit_set() {
+		$id = $this->factory->post->create();
+
+		$args  = [
+			'object_id'   => $id,
+			'object_type' => 'post',
+			'field_args'  => [
+				'name'       => __( 'A post field', 'cmb2' ),
+				'id'         => 'test_meta_5',
+				'type'       => 'text',
+				'repeatable' => true,
+				'nosplit'    => true
+			]
+		];
+		$field = new CMB2_Field( $args );
+
+		$meta_value = [ 'foo', 'baz', 'bar' ];
+		$field->save_field( $meta_value );
+
+		$this->assertEquals( $meta_value, get_post_meta( $id, 'test_meta_5', true ) );
+		$this->assertEmpty( get_post_meta( $id, 'test_meta_5_split' ) );
+	}
 }

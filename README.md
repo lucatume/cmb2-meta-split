@@ -63,3 +63,6 @@ The code below will add a repeatable text field to the page, id `my_text`, and a
 
 ## Split meta postfix
 The `_split` postfix might not be ideal for any application so the plugin comes with the `cmb2_meta_split_postfix` filter to allow for the customization of that.
+
+## Nopslit
+By defaul the meta splitting will apply to any repeatable or group field but that might not be the desired outcome; the solution if two-fold: either apply a filter to the `cmb2_meta_split_applies` filter (return `false` to prevent the splitting from happening) or set the `nosplit` parameter on a field.
