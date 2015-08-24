@@ -121,7 +121,7 @@ class CMB2_Meta_Split {
 
 		$table  = $wpdb->{$args['type'] . 'meta'};
 		$id_key = $args['type'] . '_id';
-		$q      = $wpdb->prepare( "DELETE t.* FROM $table t WHERE t.$id_key = %d AND t.meta_key REGEXP %s ", $args['id'], '^' . $args['field_id'] );
+		$q      = $wpdb->prepare( "DELETE t.* FROM $table t WHERE t.$id_key = %d AND t.meta_key REGEXP %s ", $args['id'], '^' . $args['field_id'] . '_' );
 
 		$wpdb->query( $q );
 	}
