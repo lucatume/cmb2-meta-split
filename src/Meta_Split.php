@@ -100,7 +100,7 @@ class CMB2_Meta_Split {
 		$sub_key = is_numeric( $sub_key ) ? '' : $sub_key;
 
 		foreach ( $v as $key => $entry ) {
-			if ( is_array( $entry ) ) {
+			if ( is_array( $entry ) && is_numeric( $key ) ) {
 				$this->update_sub_meta( $args, $id, $entry, $key );
 			} else {
 				$postfix      = is_numeric( $key ) ? '' : $sub_key . '_' . $key;
